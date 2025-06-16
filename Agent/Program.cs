@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Agent;
+using System.Globalization;
 using System.IO.Pipes;
 
 // 1. Each agent receives a directory path containing .txt files.
@@ -17,8 +18,5 @@ if (!Directory.Exists(directory))
     return;
 }
 
-string[] txtFiles = Directory.GetFiles(directory, "*.txt");
-
-
-// 2. It reads the content of each file, indexes words (e.g., filename; count)
-// 3. It sends this information to the Master process using a named pipe (one pipe per agent).
+AgentWorker agent = new AgentWorker(directory, pipeName);
+agent.ProcessFiles();
