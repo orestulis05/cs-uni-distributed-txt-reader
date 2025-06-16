@@ -1,7 +1,5 @@
 ﻿using Master;
 using System.Diagnostics;
-using System.IO.Pipes;
-using System.Text;
 
 if (args.Length < 2)
 {
@@ -11,6 +9,8 @@ if (args.Length < 2)
 
 string pipename1 = args[0];
 string pipename2 = args[1];
+
+Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)0x1;
 
 MasterWorker master = new MasterWorker();
 

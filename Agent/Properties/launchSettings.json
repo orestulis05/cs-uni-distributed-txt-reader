@@ -2,7 +2,7 @@
   "profiles": {
     "Agent": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\Orestas\\Desktop\\Uni\\1 kursas\\II Semestras\\Objektinis programavimas\\C#\\cs-uni-distributed-txt-reader\\txt data\"\r\nwordagent1"
+      "commandLineArgs": "\"C:\\Users\\Orestas\\Desktop\\Uni\\1 kursas\\II Semestras\\Objektinis programavimas\\C#\\cs-uni-distributed-txt-reader\\txt data\"\r\nagent1"
     }
   }
 }

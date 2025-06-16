@@ -1,6 +1,5 @@
 ﻿using Agent;
-using System.Globalization;
-using System.IO.Pipes;
+using System.Diagnostics;
 
 // 1. Each agent receives a directory path containing .txt files.
 if (args.Length < 2)
@@ -11,6 +10,8 @@ if (args.Length < 2)
 
 string directory = args[0];
 string pipeName = args[1];
+
+Process.GetCurrentProcess().ProcessorAffinity = pipeName == "agent1" ? (IntPtr)0x2 : (IntPtr)0x4;
 
 if (!Directory.Exists(directory))
 {
