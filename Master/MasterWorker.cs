@@ -30,16 +30,15 @@ namespace Master
         {
             var server = new NamedPipeServerStream(pipeName, PipeDirection.In);
             await server.WaitForConnectionAsync();
-
-            Console.WriteLine("Waiting for connection, pipe name: ");
-
+            Console.WriteLine($"{pipeName} agent connection established.");
+           
             var reader = new StreamReader(server);
 
             string? line;
             while ((line = reader.ReadLine()) != null)
             {
                 var parts = line.Split(';');
-                if (parts.Length != 3)
+                if (parts.Length < 3)
                 {
                     continue;
                 }
@@ -55,7 +54,10 @@ namespace Master
         // 3. Aggregates the data and displays the final result (filenames, word, count of word).
         public void PrintResults()
         {
-
+            foreach (WordData word in words)
+            {
+                Console.WriteLine($"{word.fileName}:{word.wordCount}:{word.word}");
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Agent
         {
             foreach (string filePath in txtFilePaths)
             {
+                Console.Write($"Processing file '{Path.GetFileName(filePath)}'... ");
                 Dictionary<string, int> wordCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
                 string content = File.ReadAllText(filePath);
                 string[] words = content.Split(new[] { ' ', '\n', '\r', ',', '.', ';', ':', '-', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
@@ -44,6 +45,8 @@ namespace Agent
                 {
                     dataQueue.Enqueue($"{Path.GetFileName(filePath)};{entry.Key};{entry.Value}");
                 }
+
+                Console.WriteLine("Done.");
             }
 
             dataQueue.Enqueue("EOF");
@@ -52,6 +55,7 @@ namespace Agent
         // 3. It sends this information to the Master process using a named pipe (one pipe per agent).
         public async void SendToMaster()
         {
+            Console.Write("Sending data to Master process... ");
             using (var client = new NamedPipeClientStream(".", this.pipeName, PipeDirection.Out))
             {
                 await client.ConnectAsync();
@@ -70,7 +74,7 @@ namespace Agent
                 }
 
             }
-
+            Console.WriteLine("Done.");
         }
     }
 }

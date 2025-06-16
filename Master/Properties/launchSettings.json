@@ -2,7 +2,7 @@
   "profiles": {
     "Master": {
       "commandName": "Project",
-      "commandLineArgs": "custompipe1\r\ncustompipe2"
+      "commandLineArgs": "wordagent1\r\nwordagent2"
     }
   }
 }

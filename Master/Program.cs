@@ -19,5 +19,6 @@ Task t2 = master.ListenToAgent(pipename2);
 
 await Task.WhenAll(t1, t2);
 
+master.PrintResults();
 
 Console.ReadKey();
