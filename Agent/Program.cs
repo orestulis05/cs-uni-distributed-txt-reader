@@ -1,20 +1,24 @@
-﻿using System.IO.Pipes;
+﻿using System.Globalization;
+using System.IO.Pipes;
 
-// Get directory path from args
+// 1. Each agent receives a directory path containing .txt files.
+if (args.Length < 2)
+{
+    Console.WriteLine("agent.exe <directory> <pipename>");
+    return;
+}
 
-// Connection to the master process
-using var client = new NamedPipeClientStream(".", "mypipe", PipeDirection.Out);
-Console.WriteLine("Connecting to Master process...");
-client.Connect();
-Console.WriteLine("Connected!");
+string directory = args[0];
+string pipeName = args[1];
 
-// Get files from a directory
-// Read through every file
-// Send data to the Master process
+if (!Directory.Exists(directory))
+{
+    Console.WriteLine("Directory does not exist");
+    return;
+}
 
-using var writer = new StreamWriter(client) { AutoFlush = true };
-writer.WriteLine("Hello from the agent!");
+string[] txtFiles = Directory.GetFiles(directory, "*.txt");
 
-// writer.Flush();
 
-Console.ReadKey();
+// 2. It reads the content of each file, indexes words (e.g., filename; count)
+// 3. It sends this information to the Master process using a named pipe (one pipe per agent).

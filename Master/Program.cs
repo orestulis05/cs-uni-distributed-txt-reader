@@ -2,30 +2,17 @@
 using System.IO.Pipes;
 using System.Text;
 
-// Connection to agent process
-using var server = new NamedPipeServerStream("mypipe", PipeDirection.In);
 
-try
+// 1. Waits for connections from both agents via named pipes.
+
+if (args.Length < 2)
 {
-    Console.WriteLine("Awaiting for agent connection...");
-    server.WaitForConnection();
-} catch
-{
-    Console.WriteLine("Something went wrong with connection.");
+    Console.WriteLine("master.exe <pipename1> <pipename2>");
     return;
 }
-Console.WriteLine("Connected successfully. Awaiting for data.");
 
-// Wait for data.
-// Process the data.
-// Print results.
+string pipename1 = args[0];
+string pipename2 = args[1];
 
-using var reader = new StreamReader(server);
-string? message = reader.ReadLine();
-
-if (message == null)
-    return;
-
-Console.WriteLine($"Received: {message}");
-
-Console.ReadKey();
+// 2. Receives and processes the indexed word data.
+// 3. Aggregates the data and displays the final result (filenames, word, count of word).
