@@ -20,3 +20,4 @@ if (!Directory.Exists(directory))
 
 AgentWorker agent = new AgentWorker(directory, pipeName);
 agent.ProcessFiles();
+agent.SendToMaster();

@@ -15,4 +15,8 @@ string pipename1 = args[0];
 string pipename2 = args[1];
 
 // 2. Receives and processes the indexed word data.
+
+
 // 3. Aggregates the data and displays the final result (filenames, word, count of word).
+
+Console.ReadKey();

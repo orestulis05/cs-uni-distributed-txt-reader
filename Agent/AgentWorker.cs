@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +9,16 @@ namespace Agent
 {
     public class AgentWorker
     {
+        private string directory;
+        private string pipeName;
+
         private string[] txtFilePaths;
         private Queue<string> dataQueue;
 
         public AgentWorker(string directory, string pipeName) {
+            this.directory = directory;
+            this.pipeName = pipeName;
+
             txtFilePaths = Directory.GetFiles(directory, "*.txt");
             dataQueue = new Queue<string>();
         }
@@ -40,21 +47,30 @@ namespace Agent
             }
 
             dataQueue.Enqueue("EOF");
-
-            while (dataQueue.TryDequeue(out string? data))
-            {
-                if (data == "EOF")
-                    break;
-
-                Console.WriteLine(data);
-            }
         }
 
         // 3. It sends this information to the Master process using a named pipe (one pipe per agent).
         public void SendToMaster()
         {
+            using (var client = new NamedPipeClientStream(".", this.pipeName, PipeDirection.Out))
+            {
+                client.Connect();
+
+                using (var writer = new StreamWriter(client))
+                {
+                    while (this.dataQueue.TryDequeue(out string? data))
+                    {
+                        if (data == "EOF")
+                            break;
+
+                        writer.WriteLine(data);
+                    }
+
+                    Thread.Sleep(50);
+                }
+
+            }
 
         }
-
     }
 }
