@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Master;
+using System.Diagnostics;
 using System.IO.Pipes;
 using System.Text;
-
-
-// 1. Waits for connections from both agents via named pipes.
 
 if (args.Length < 2)
 {
@@ -14,9 +12,12 @@ if (args.Length < 2)
 string pipename1 = args[0];
 string pipename2 = args[1];
 
-// 2. Receives and processes the indexed word data.
+MasterWorker master = new MasterWorker();
 
+Task t1 = master.ListenToAgent(pipename1);
+Task t2 = master.ListenToAgent(pipename2);
 
-// 3. Aggregates the data and displays the final result (filenames, word, count of word).
+await Task.WhenAll(t1, t2);
+
 
 Console.ReadKey();

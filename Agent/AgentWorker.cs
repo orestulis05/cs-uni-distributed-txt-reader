@@ -50,11 +50,11 @@ namespace Agent
         }
 
         // 3. It sends this information to the Master process using a named pipe (one pipe per agent).
-        public void SendToMaster()
+        public async void SendToMaster()
         {
             using (var client = new NamedPipeClientStream(".", this.pipeName, PipeDirection.Out))
             {
-                client.Connect();
+                await client.ConnectAsync();
 
                 using (var writer = new StreamWriter(client))
                 {
